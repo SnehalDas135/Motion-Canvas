@@ -4,7 +4,7 @@
 //
 // Python loads this as: ctypes.CDLL("./engine.so")
 
-#include "include/FreeFaceEngine.h"
+#include "FreeFaceEngine.h"
 #include <cstring>
 #include <cstdio>
 

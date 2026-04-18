@@ -16,6 +16,8 @@ import sys, os, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "python"))
+os.chdir(ROOT)
+
 
 PASS = "\033[92m✓ PASS\033[0m"
 FAIL = "\033[91m✗ FAIL\033[0m"
