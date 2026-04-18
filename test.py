@@ -16,6 +16,10 @@ import sys, os, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "python"))
+<<<<<<< HEAD
+=======
+os.chdir(ROOT)
+>>>>>>> 4f2e912 (FIX BOMB)
 
 PASS = "\033[92m✓ PASS\033[0m"
 FAIL = "\033[91m✗ FAIL\033[0m"
