@@ -4,7 +4,11 @@
 //
 // Python loads this as: ctypes.CDLL("./engine.so")
 
+<<<<<<< HEAD
 #include "include/FreeFaceEngine.h"
+=======
+#include "FreeFaceEngine.h"
+>>>>>>> 4f2e912 (FIX BOMB)
 #include <cstring>
 #include <cstdio>
 
