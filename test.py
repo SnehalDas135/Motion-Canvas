@@ -16,10 +16,7 @@ import sys, os, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "python"))
-<<<<<<< HEAD
-=======
 os.chdir(ROOT)
->>>>>>> 4f2e912 (FIX BOMB)
 
 PASS = "\033[92m✓ PASS\033[0m"
 FAIL = "\033[91m✗ FAIL\033[0m"
@@ -236,7 +233,9 @@ def test_voice():
                 print(f"{FAIL}  Speech detected but could not understand it")
     except Exception as e:
         print(f"{FAIL}  Voice error: {e}")
-        print(f"{INFO}  Install: pip install SpeechRecognition pyaudio")
+        print(f"{INFO}  Install core deps, then optional voice extras:")
+        print(f"{INFO}    pip install -r requirements.txt")
+        print(f"{INFO}    pip install -r requirements-voice.txt")
     return False
 
 

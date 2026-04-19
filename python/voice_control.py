@@ -12,7 +12,10 @@ Commands recognised:
   Anything else   → typed as text
 """
 import threading
-import speech_recognition as sr
+try:
+    import speech_recognition as sr
+except ImportError:
+    sr = None
 from pynput.keyboard import Key, Controller as KbCtrl
 from pynput.mouse    import Controller as MouseCtrl
 
@@ -28,6 +31,11 @@ COMMANDS = {
 
 class VoiceControl:
     def __init__(self, on_scroll_up=None, on_scroll_down=None):
+        if sr is None:
+            raise RuntimeError(
+                "SpeechRecognition is not installed. "
+                "Install core requirements and optional voice extras."
+            )
         self._kb            = KbCtrl()
         self._mouse         = MouseCtrl()
         self._recognizer    = sr.Recognizer()
@@ -40,6 +48,15 @@ class VoiceControl:
         self._recognizer.dynamic_energy_threshold = True
 
     def start(self):
+        try:
+            with sr.Microphone():
+                pass
+        except Exception as e:
+            raise RuntimeError(
+                "Microphone backend unavailable. Install optional voice extras "
+                "(PyAudio plus PortAudio system libs). "
+                f"Details: {e}"
+            ) from e
         self._running = True
         self._thread  = threading.Thread(target=self._loop, daemon=True)
         self._thread.start()
@@ -49,23 +66,26 @@ class VoiceControl:
         self._running = False
 
     def _loop(self):
-        with sr.Microphone() as source:
-            self._recognizer.adjust_for_ambient_noise(source, duration=1)
-            while self._running:
-                try:
-                    audio = self._recognizer.listen(source, timeout=3,
-                                                    phrase_time_limit=5)
-                    text = self._recognizer.recognize_google(audio).lower().strip()
-                    print(f"[Voice] Heard: {text}")
-                    self._handle(text)
-                except sr.WaitTimeoutError:
-                    pass   # no speech detected, loop again
-                except sr.UnknownValueError:
-                    pass   # couldn't understand audio
-                except sr.RequestError as e:
-                    print(f"[Voice] API error: {e}")
-                except Exception as e:
-                    print(f"[Voice] Error: {e}")
+        try:
+            with sr.Microphone() as source:
+                self._recognizer.adjust_for_ambient_noise(source, duration=1)
+                while self._running:
+                    try:
+                        audio = self._recognizer.listen(source, timeout=3,
+                                                        phrase_time_limit=5)
+                        text = self._recognizer.recognize_google(audio).lower().strip()
+                        print(f"[Voice] Heard: {text}")
+                        self._handle(text)
+                    except sr.WaitTimeoutError:
+                        pass   # no speech detected, loop again
+                    except sr.UnknownValueError:
+                        pass   # couldn't understand audio
+                    except sr.RequestError as e:
+                        print(f"[Voice] API error: {e}")
+                    except Exception as e:
+                        print(f"[Voice] Error: {e}")
+        except Exception as e:
+            print(f"[Voice] Disabled: {e}")
 
     def _handle(self, text: str):
         # Check commands first

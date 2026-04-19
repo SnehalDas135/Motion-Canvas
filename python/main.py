@@ -38,12 +38,14 @@ PROFILE_PATH     = os.path.join(ROOT, "profiles", "current.profile")
 # ─────────────────────────────────────────────────────────────────
 
 def get_screen_size() -> tuple[int, int]:
-    try:
-        from screeninfo import get_monitors
-        m = get_monitors()[0]
-        return m.width, m.height
-    except Exception:
-        return 1920, 1080
+    override = os.environ.get("FREEFACE_SCREEN_SIZE", "").lower().strip()
+    if "x" in override:
+        try:
+            w, h = override.split("x", 1)
+            return int(w), int(h)
+        except Exception:
+            pass
+    return 1920, 1080
 
 
 def draw_hud(frame, label, calib, calib_pct, fatigued, dwell_pct):

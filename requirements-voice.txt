@@ -1,0 +1,3 @@
+# Optional voice extras.
+# macOS/Linux may require PortAudio system libs before installing PyAudio.
+PyAudio>=0.2.13

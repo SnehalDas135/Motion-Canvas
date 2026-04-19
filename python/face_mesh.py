@@ -6,7 +6,9 @@ Runs face detection and returns normalized landmarks.
 Optimisation: processes every Nth frame (default: 2) to halve CPU load.
 MediaPipe's model runs at ~30fps; we only need 15fps for smooth control.
 """
+import os
 import cv2
+os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 import mediapipe as mp
 import numpy as np
 from typing import Optional
