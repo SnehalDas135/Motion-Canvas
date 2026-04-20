@@ -2,7 +2,7 @@
 engine_bridge.py
 Loads the compiled C++ engine.so and wraps it in a clean Python API.
 Python never needs to know about the C++ internals — just calls these methods.
-"""
+""" 
 import ctypes, os, sys
 from dataclasses import dataclass
 from enum import IntEnum
